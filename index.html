@@ -221,7 +221,36 @@
 
 
                 <div class="kpi-title">
-                    الحاويات التي تم تحميلها
+                    إجمالي تم التحميل
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NOT LOADED -->
+
+        <div class="kpi-card not-loaded">
+
+            <div class="kpi-icon">
+                ⏳
+            </div>
+
+
+            <div class="kpi-content">
+
+                <div
+                    class="kpi-value"
+                    id="notLoadedContainers"
+                >
+                    0
+                </div>
+
+
+                <div class="kpi-title">
+                    إجمالي لم يتم التحميل
                 </div>
 
             </div>
@@ -240,7 +269,7 @@
     <div class="charts-grid">
 
 
-        <!-- FACTORY -->
+        <!-- FACTORY CHART -->
 
         <div class="chart-card">
 
@@ -261,7 +290,7 @@
 
 
 
-        <!-- STATUS -->
+        <!-- STATUS CHART -->
 
         <div class="chart-card">
 
@@ -318,12 +347,16 @@
     <div class="table-toolbar">
 
 
+        <!-- SEARCH -->
+
         <input
             type="text"
             id="searchInput"
             placeholder="بحث عن أمر الشراء، المصنع، الموديل، الوصف..."
         >
 
+
+        <!-- DEPARTMENT -->
 
         <select
             id="departmentFilter"
@@ -336,6 +369,8 @@
         </select>
 
 
+        <!-- FACTORY -->
+
         <select
             id="factoryFilter"
         >
@@ -346,6 +381,8 @@
 
         </select>
 
+
+        <!-- STATUS -->
 
         <select
             id="statusFilter"
@@ -358,6 +395,31 @@
         </select>
 
 
+        <!-- NOT LOADED -->
+
+        <select
+            id="notLoadedFilter"
+        >
+
+            <option value="">
+                لم يتم التحميل: الكل
+            </option>
+
+
+            <option value="greaterThanZero">
+                لم يتم التحميل: أكبر من 0
+            </option>
+
+
+            <option value="zero">
+                لم يتم التحميل: 0
+            </option>
+
+        </select>
+
+
+        <!-- POL -->
+
         <select
             id="polFilter"
         >
@@ -368,6 +430,8 @@
 
         </select>
 
+
+        <!-- POD -->
 
         <select
             id="podFilter"
@@ -505,6 +569,8 @@
 
 
 
+    <!-- SEARCH -->
+
     <div class="table-toolbar">
 
         <input
@@ -517,6 +583,8 @@
 
 
 
+    <!-- TABLE -->
+
     <div class="table-container">
 
         <table id="ordersPageTable">
@@ -525,33 +593,61 @@
 
                 <tr>
 
-                    <th>رقم أمر الشراء</th>
+                    <th>
+                        رقم أمر الشراء
+                    </th>
 
-                    <th>المصنع</th>
+                    <th>
+                        المصنع
+                    </th>
 
-                    <th>التواصل</th>
+                    <th>
+                        التواصل
+                    </th>
 
-                    <th>القسم</th>
+                    <th>
+                        القسم
+                    </th>
 
-                    <th>الموديل</th>
+                    <th>
+                        الموديل
+                    </th>
 
-                    <th>الوصف</th>
+                    <th>
+                        الوصف
+                    </th>
 
-                    <th>الكمية</th>
+                    <th>
+                        الكمية
+                    </th>
 
-                    <th>كمية لكل حاوية</th>
+                    <th>
+                        كمية لكل حاوية
+                    </th>
 
-                    <th>عدد الحاويات</th>
+                    <th>
+                        عدد الحاويات
+                    </th>
 
-                    <th>تم التحميل</th>
+                    <th>
+                        تم التحميل
+                    </th>
 
-                    <th>لم يتم التحميل</th>
+                    <th>
+                        لم يتم التحميل
+                    </th>
 
-                    <th>ميناء الشحن</th>
+                    <th>
+                        ميناء الشحن
+                    </th>
 
-                    <th>ميناء الوصول</th>
+                    <th>
+                        ميناء الوصول
+                    </th>
 
-                    <th>الحالة</th>
+                    <th>
+                        الحالة
+                    </th>
 
                 </tr>
 
@@ -583,7 +679,7 @@
 
 
 <!-- =====================================================
-     MAIN SCRIPT
+     MAIN JAVASCRIPT
 ===================================================== -->
 
 <script
