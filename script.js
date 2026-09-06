@@ -8,6 +8,13 @@
 // =====================================================
 // GOOGLE APPS SCRIPT API
 // =====================================================
+//
+// ضع هنا رابط Web App الخاص بـ Google Apps Script
+//
+// مثال:
+// const API_URL = "https://script.google.com/macros/s/XXXXX/exec";
+//
+// =====================================================
 
 const API_URL =
     "https://script.google.com/macros/s/AKfycbzcOzKiEgDRY5gMXiJequUKefzrF1hPb8RnEmt8KzuN-XzuxJWbYhfX0nXf9oHgvTVqOA/exec";
@@ -41,7 +48,10 @@ function safeText(value) {
 
     }
 
-    return String(value).trim();
+
+    return String(
+        value
+    ).trim();
 
 }
 
@@ -82,20 +92,29 @@ function escapeHTML(value) {
 
 function getNumber(value) {
 
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return 0;
+
+    }
+
+
     const number =
 
         Number(
 
-            String(
-                value ?? ""
-            )
+            String(value)
 
-            .replace(
-                /,/g,
-                ""
-            )
+                .replace(
+                    /,/g,
+                    ""
+                )
 
-            .trim()
+                .trim()
 
         );
 
@@ -117,7 +136,10 @@ function formatNumber(value) {
     return getNumber(
         value
     ).toLocaleString(
-        "en-US"
+        "en-US",
+        {
+            maximumFractionDigits: 2
+        }
     );
 
 }
@@ -279,7 +301,7 @@ async function loadOrders() {
         ) {
 
             console.error(
-                "Google Apps Script URL is missing."
+                "ضع رابط Google Apps Script داخل API_URL"
             );
 
             return;
@@ -317,7 +339,7 @@ async function loadOrders() {
         ) {
 
             console.error(
-                "API did not return an array:",
+                "API لم يرجع Array:",
                 data
             );
 
@@ -342,7 +364,7 @@ async function loadOrders() {
     catch (error) {
 
         console.error(
-            "Failed to load data:",
+            "حدث خطأ أثناء تحميل البيانات:",
             error
         );
 
@@ -353,11 +375,15 @@ async function loadOrders() {
 
 
 // =====================================================
-// FILTERED DATA
+// GET FILTERED ORDERS
 // =====================================================
 
 function getFilteredOrders() {
 
+
+    // -------------------------------------------------
+    // SEARCH
+    // -------------------------------------------------
 
     const search =
 
@@ -368,9 +394,14 @@ function getFilteredOrders() {
             )?.value
 
         )
+
         .toLowerCase();
 
 
+
+    // -------------------------------------------------
+    // DEPARTMENT
+    // -------------------------------------------------
 
     const department =
 
@@ -380,6 +411,10 @@ function getFilteredOrders() {
 
 
 
+    // -------------------------------------------------
+    // FACTORY
+    // -------------------------------------------------
+
     const factory =
 
         document.getElementById(
@@ -387,6 +422,10 @@ function getFilteredOrders() {
         )?.value || "";
 
 
+
+    // -------------------------------------------------
+    // STATUS
+    // -------------------------------------------------
 
     const status =
 
@@ -396,6 +435,22 @@ function getFilteredOrders() {
 
 
 
+    // -------------------------------------------------
+    // NOT LOADED
+    // -------------------------------------------------
+
+    const notLoadedFilter =
+
+        document.getElementById(
+            "notLoadedFilter"
+        )?.value || "";
+
+
+
+    // -------------------------------------------------
+    // POL
+    // -------------------------------------------------
+
     const pol =
 
         document.getElementById(
@@ -403,6 +458,10 @@ function getFilteredOrders() {
         )?.value || "";
 
 
+
+    // -------------------------------------------------
+    // POD
+    // -------------------------------------------------
 
     const pod =
 
@@ -412,9 +471,17 @@ function getFilteredOrders() {
 
 
 
+    // -------------------------------------------------
+    // FILTER
+    // -------------------------------------------------
+
     return orders.filter(
         item => {
 
+
+            // -----------------------------------------
+            // SEARCH
+            // -----------------------------------------
 
             const searchable = [
 
@@ -454,61 +521,141 @@ function getFilteredOrders() {
 
 
 
-            return (
+            // -----------------------------------------
+            // SEARCH MATCH
+            // -----------------------------------------
+
+            const searchMatch =
 
                 searchable.includes(
                     search
-                )
+                );
 
 
-                &&
+
+            // -----------------------------------------
+            // DEPARTMENT
+            // -----------------------------------------
+
+            const departmentMatch =
+
+                !department ||
+
+                item.department ===
+                department;
 
 
-                (
-                    !department ||
-                    item.department ===
-                    department
-                )
+
+            // -----------------------------------------
+            // FACTORY
+            // -----------------------------------------
+
+            const factoryMatch =
+
+                !factory ||
+
+                item.factory ===
+                factory;
 
 
-                &&
+
+            // -----------------------------------------
+            // STATUS
+            // -----------------------------------------
+
+            const statusMatch =
+
+                !status ||
+
+                item.status ===
+                status;
 
 
-                (
-                    !factory ||
-                    item.factory ===
-                    factory
-                )
+
+            // -----------------------------------------
+            // NOT LOADED FILTER
+            // -----------------------------------------
+
+            let notLoadedMatch =
+                true;
 
 
-                &&
+
+            if (
+                notLoadedFilter ===
+                "greaterThanZero"
+            ) {
+
+                notLoadedMatch =
+
+                    getNumber(
+                        item.notLoaded
+                    ) > 0;
+
+            }
 
 
-                (
-                    !status ||
-                    item.status ===
-                    status
-                )
+
+            if (
+                notLoadedFilter ===
+                "zero"
+            ) {
+
+                notLoadedMatch =
+
+                    getNumber(
+                        item.notLoaded
+                    ) === 0;
+
+            }
 
 
-                &&
+
+            // -----------------------------------------
+            // POL
+            // -----------------------------------------
+
+            const polMatch =
+
+                !pol ||
+
+                item.pol ===
+                pol;
 
 
-                (
-                    !pol ||
-                    item.pol ===
-                    pol
-                )
+
+            // -----------------------------------------
+            // POD
+            // -----------------------------------------
+
+            const podMatch =
+
+                !pod ||
+
+                item.pod ===
+                pod;
 
 
-                &&
 
+            // -----------------------------------------
+            // FINAL RESULT
+            // -----------------------------------------
 
-                (
-                    !pod ||
-                    item.pod ===
-                    pod
-                )
+            return (
+
+                searchMatch &&
+
+                departmentMatch &&
+
+                factoryMatch &&
+
+                statusMatch &&
+
+                notLoadedMatch &&
+
+                polMatch &&
+
+                podMatch
 
             );
 
@@ -520,7 +667,7 @@ function getFilteredOrders() {
 
 
 // =====================================================
-// FILTER OPTIONS
+// POPULATE SELECT
 // =====================================================
 
 function populateSelect(
@@ -614,7 +761,7 @@ function populateSelect(
 
 
 // =====================================================
-// POPULATE ALL FILTERS
+// POPULATE FILTERS
 // =====================================================
 
 function populateFilters() {
@@ -698,7 +845,7 @@ function populateFilters() {
 
 
 // =====================================================
-// KPI
+// UPDATE KPIs
 // =====================================================
 
 function updateKPIs() {
@@ -709,16 +856,21 @@ function updateKPIs() {
 
 
 
-    // إجمالي السجلات
+    // -------------------------------------------------
+    // TOTAL RECORDS
+    // -------------------------------------------------
 
     const totalRecords =
         data.length;
 
 
 
-    // إجمالي الكمية
+    // -------------------------------------------------
+    // TOTAL QUANTITY
+    // -------------------------------------------------
 
     const totalQty =
+
         data.reduce(
 
             (
@@ -737,9 +889,12 @@ function updateKPIs() {
 
 
 
-    // إجمالي الحاويات
+    // -------------------------------------------------
+    // TOTAL CONTAINERS
+    // -------------------------------------------------
 
     const totalContainers =
+
         data.reduce(
 
             (
@@ -758,9 +913,13 @@ function updateKPIs() {
 
 
 
-    // الحاويات التي تم تحميلها
+    // -------------------------------------------------
+    // LOADED
+    // COLUMN J
+    // -------------------------------------------------
 
     const loadedContainers =
+
         data.reduce(
 
             (
@@ -779,6 +938,35 @@ function updateKPIs() {
 
 
 
+    // -------------------------------------------------
+    // NOT LOADED
+    // COLUMN K
+    // -------------------------------------------------
+
+    const notLoadedContainers =
+
+        data.reduce(
+
+            (
+                total,
+                item
+            ) =>
+
+                total +
+                getNumber(
+                    item.notLoaded
+                ),
+
+            0
+
+        );
+
+
+
+    // -------------------------------------------------
+    // DISPLAY
+    // -------------------------------------------------
+
     setElementText(
 
         "totalRecords",
@@ -794,8 +982,9 @@ function updateKPIs() {
 
         "totalQty",
 
-        totalQty
-            .toLocaleString()
+        formatNumber(
+            totalQty
+        )
 
     );
 
@@ -805,8 +994,9 @@ function updateKPIs() {
 
         "totalContainers",
 
-        totalContainers
-            .toLocaleString()
+        formatNumber(
+            totalContainers
+        )
 
     );
 
@@ -816,8 +1006,21 @@ function updateKPIs() {
 
         "loadedContainers",
 
-        loadedContainers
-            .toLocaleString()
+        formatNumber(
+            loadedContainers
+        )
+
+    );
+
+
+
+    setElementText(
+
+        "notLoadedContainers",
+
+        formatNumber(
+            notLoadedContainers
+        )
 
     );
 
@@ -836,7 +1039,7 @@ function updateKPIs() {
 
 
 // =====================================================
-// MAIN TABLE
+// RENDER MAIN TABLE
 // =====================================================
 
 function renderTable() {
@@ -941,7 +1144,7 @@ function renderTable() {
 
                     <!-- F -->
 
-                    <td>
+                    <td class="description-cell">
                         ${escapeHTML(
                             item.description
                         )}
@@ -995,7 +1198,7 @@ function renderTable() {
 
                     <!-- L -->
 
-                    <td>
+                    <td class="center">
                         ${escapeHTML(
                             item.pol
                         )}
@@ -1004,7 +1207,7 @@ function renderTable() {
 
                     <!-- M -->
 
-                    <td>
+                    <td class="center">
                         ${escapeHTML(
                             item.pod
                         )}
@@ -1032,7 +1235,7 @@ function renderTable() {
 
 
 // =====================================================
-// DATA PAGE TABLE
+// RENDER DATA PAGE
 // =====================================================
 
 function renderOrdersPage() {
@@ -1162,31 +1365,45 @@ function renderOrdersPage() {
                 <tr>
 
                     <td>
-                        ${escapeHTML(item.po)}
+                        ${escapeHTML(
+                            item.po
+                        )}
                     </td>
 
                     <td>
-                        ${escapeHTML(item.factory)}
+                        ${escapeHTML(
+                            item.factory
+                        )}
                     </td>
 
                     <td>
-                        ${escapeHTML(item.contact)}
+                        ${escapeHTML(
+                            item.contact
+                        )}
                     </td>
 
                     <td>
-                        ${escapeHTML(item.department)}
+                        ${escapeHTML(
+                            item.department
+                        )}
                     </td>
 
                     <td>
-                        ${escapeHTML(item.model)}
+                        ${escapeHTML(
+                            item.model
+                        )}
                     </td>
 
-                    <td>
-                        ${escapeHTML(item.description)}
+                    <td class="description-cell">
+                        ${escapeHTML(
+                            item.description
+                        )}
                     </td>
 
                     <td class="center">
-                        ${formatNumber(item.qty)}
+                        ${formatNumber(
+                            item.qty
+                        )}
                     </td>
 
                     <td class="center">
@@ -1213,16 +1430,22 @@ function renderOrdersPage() {
                         )}
                     </td>
 
-                    <td>
-                        ${escapeHTML(item.pol)}
+                    <td class="center">
+                        ${escapeHTML(
+                            item.pol
+                        )}
+                    </td>
+
+                    <td class="center">
+                        ${escapeHTML(
+                            item.pod
+                        )}
                     </td>
 
                     <td>
-                        ${escapeHTML(item.pod)}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(item.status)}
+                        ${escapeHTML(
+                            item.status
+                        )}
                     </td>
 
                 </tr>
@@ -1286,9 +1509,11 @@ function drawFactoryChart() {
                     factory
                 ] = {
 
-                    qty: 0,
+                    qty:
+                        0,
 
-                    containers: 0
+                    containers:
+                        0
 
                 };
 
@@ -1359,7 +1584,8 @@ function drawFactoryChart() {
 
             {
 
-                type: "bar",
+                type:
+                    "bar",
 
 
                 data: {
@@ -1422,6 +1648,7 @@ function drawFactoryChart() {
                             callbacks: {
 
                                 afterLabel:
+
                                     context => {
 
 
@@ -1434,7 +1661,7 @@ function drawFactoryChart() {
 
                                         return [
 
-                                            `الحاويات: ${item.containers.toLocaleString()}`
+                                            `الحاويات: ${formatNumber(item.containers)}`
 
                                         ];
 
@@ -1544,6 +1771,7 @@ function drawStatusChart() {
                 status
             ].rows++;
 
+
         }
     );
 
@@ -1584,7 +1812,8 @@ function drawStatusChart() {
 
             {
 
-                type: "doughnut",
+                type:
+                    "doughnut",
 
 
                 data: {
@@ -1635,6 +1864,7 @@ function drawStatusChart() {
                             callbacks: {
 
                                 afterLabel:
+
                                     context => {
 
 
@@ -1645,7 +1875,11 @@ function drawStatusChart() {
                                             ][1];
 
 
-                                        return `السجلات: ${item.rows.toLocaleString()}`;
+                                        return [
+
+                                            `السجلات: ${item.rows.toLocaleString()}`
+
+                                        ];
 
                                     }
 
@@ -1693,6 +1927,7 @@ function setupNavigation() {
 
                             .forEach(
                                 btn =>
+
                                     btn.classList.remove(
                                         "active"
                                     )
@@ -1713,6 +1948,7 @@ function setupNavigation() {
 
                             .forEach(
                                 section =>
+
                                     section.classList.add(
                                         "hidden"
                                     )
@@ -1762,6 +1998,8 @@ function setupEvents() {
         "factoryFilter",
 
         "statusFilter",
+
+        "notLoadedFilter",
 
         "polFilter",
 
@@ -1863,7 +2101,7 @@ function refreshAll() {
 
 
 // =====================================================
-// START
+// START APPLICATION
 // =====================================================
 
 document.addEventListener(
