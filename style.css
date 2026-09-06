@@ -19,7 +19,8 @@
 
 html {
 
-    direction: rtl;
+    direction:
+        rtl;
 
 }
 
@@ -350,7 +351,7 @@ h2 {
 
 
 /* =====================================================
-   KPI
+   KPI GRID
 ===================================================== */
 
 .kpi-grid {
@@ -360,7 +361,7 @@ h2 {
 
     grid-template-columns:
         repeat(
-            4,
+            5,
             minmax(0,1fr)
         );
 
@@ -372,6 +373,10 @@ h2 {
 
 }
 
+
+/* =====================================================
+   KPI CARD
+===================================================== */
 
 .kpi-card {
 
@@ -417,6 +422,10 @@ h2 {
 
 }
 
+
+/* =====================================================
+   KPI ICON
+===================================================== */
 
 .kpi-icon {
 
@@ -479,10 +488,25 @@ h2 {
 }
 
 
+.not-loaded .kpi-icon {
+
+    background:
+        #fee2e2;
+
+}
+
+
+/* =====================================================
+   KPI CONTENT
+===================================================== */
+
 .kpi-content {
 
     flex:
         1;
+
+    min-width:
+        0;
 
 }
 
@@ -490,7 +514,7 @@ h2 {
 .kpi-value {
 
     font-size:
-        42px;
+        34px;
 
     font-weight:
         700;
@@ -513,7 +537,10 @@ h2 {
         #64748b;
 
     font-size:
-        14px;
+        13px;
+
+    line-height:
+        1.4;
 
 }
 
@@ -606,7 +633,7 @@ h2 {
 
 
 /* =====================================================
-   FILTERS
+   FILTER TOOLBAR
 ===================================================== */
 
 .table-toolbar {
@@ -616,7 +643,10 @@ h2 {
 
     grid-template-columns:
         2fr
-        repeat(5,1fr);
+        repeat(
+            6,
+            1fr
+        );
 
     gap:
         10px;
@@ -674,7 +704,7 @@ h2 {
 
 
 /* =====================================================
-   TABLE
+   TABLE CONTAINER
 ===================================================== */
 
 .table-container {
@@ -699,6 +729,10 @@ h2 {
 
 }
 
+
+/* =====================================================
+   TABLE
+===================================================== */
 
 table {
 
@@ -790,7 +824,7 @@ tbody tr:hover td {
 
 
 /* =====================================================
-   TABLE WIDTHS
+   TABLE WIDTH
 ===================================================== */
 
 #ordersTable,
@@ -802,7 +836,11 @@ tbody tr:hover td {
 }
 
 
-/* PO */
+/* =====================================================
+   COLUMN WIDTHS
+===================================================== */
+
+/* A - PO */
 
 #ordersTable th:nth-child(1),
 #ordersTable td:nth-child(1),
@@ -815,7 +853,7 @@ tbody tr:hover td {
 }
 
 
-/* FACTORY */
+/* B - FACTORY */
 
 #ordersTable th:nth-child(2),
 #ordersTable td:nth-child(2),
@@ -828,7 +866,7 @@ tbody tr:hover td {
 }
 
 
-/* CONTACT */
+/* C - CONTACT */
 
 #ordersTable th:nth-child(3),
 #ordersTable td:nth-child(3),
@@ -841,7 +879,7 @@ tbody tr:hover td {
 }
 
 
-/* DEPARTMENT */
+/* D - DEPARTMENT */
 
 #ordersTable th:nth-child(4),
 #ordersTable td:nth-child(4),
@@ -854,7 +892,7 @@ tbody tr:hover td {
 }
 
 
-/* MODEL */
+/* E - MODEL */
 
 #ordersTable th:nth-child(5),
 #ordersTable td:nth-child(5),
@@ -867,7 +905,7 @@ tbody tr:hover td {
 }
 
 
-/* DESCRIPTION */
+/* F - DESCRIPTION */
 
 #ordersTable th:nth-child(6),
 #ordersTable td:nth-child(6),
@@ -875,48 +913,55 @@ tbody tr:hover td {
 #ordersPageTable td:nth-child(6) {
 
     min-width:
-        240px;
-
-    white-space:
-        normal;
-
-    line-height:
-        1.5;
+        250px;
 
 }
 
 
-/* NUMBERS */
+/* G - QTY */
 
 #ordersTable th:nth-child(7),
 #ordersTable td:nth-child(7),
+#ordersPageTable th:nth-child(7),
+#ordersPageTable td:nth-child(7) {
+
+    min-width:
+        100px;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* H - QTY PER CONTAINER */
 
 #ordersTable th:nth-child(8),
 #ordersTable td:nth-child(8),
+#ordersPageTable th:nth-child(8),
+#ordersPageTable td:nth-child(8) {
+
+    min-width:
+        130px;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* I - CONTAINERS */
 
 #ordersTable th:nth-child(9),
 #ordersTable td:nth-child(9),
-
-#ordersTable th:nth-child(10),
-#ordersTable td:nth-child(10),
-
-#ordersTable th:nth-child(11),
-#ordersTable td:nth-child(11),
-
-#ordersPageTable th:nth-child(7),
-#ordersPageTable td:nth-child(7),
-
-#ordersPageTable th:nth-child(8),
-#ordersPageTable td:nth-child(8),
-
 #ordersPageTable th:nth-child(9),
-#ordersPageTable td:nth-child(9),
-
-#ordersPageTable th:nth-child(10),
-#ordersPageTable td:nth-child(10),
-
-#ordersPageTable th:nth-child(11),
-#ordersPageTable td:nth-child(11) {
+#ordersPageTable td:nth-child(9) {
 
     min-width:
         110px;
@@ -930,17 +975,64 @@ tbody tr:hover td {
 }
 
 
-/* PORTS */
+/* J - LOADED */
+
+#ordersTable th:nth-child(10),
+#ordersTable td:nth-child(10),
+#ordersPageTable th:nth-child(10),
+#ordersPageTable td:nth-child(10) {
+
+    min-width:
+        110px;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* K - NOT LOADED */
+
+#ordersTable th:nth-child(11),
+#ordersTable td:nth-child(11),
+#ordersPageTable th:nth-child(11),
+#ordersPageTable td:nth-child(11) {
+
+    min-width:
+        130px;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* L - POL */
 
 #ordersTable th:nth-child(12),
 #ordersTable td:nth-child(12),
+#ordersPageTable th:nth-child(12),
+#ordersPageTable td:nth-child(12) {
+
+    min-width:
+        120px;
+
+    text-align:
+        center;
+
+}
+
+
+/* M - POD */
 
 #ordersTable th:nth-child(13),
 #ordersTable td:nth-child(13),
-
-#ordersPageTable th:nth-child(12),
-#ordersPageTable td:nth-child(12),
-
 #ordersPageTable th:nth-child(13),
 #ordersPageTable td:nth-child(13) {
 
@@ -953,22 +1045,36 @@ tbody tr:hover td {
 }
 
 
-/* STATUS */
+/* N - STATUS */
 
 #ordersTable th:nth-child(14),
 #ordersTable td:nth-child(14),
-
 #ordersPageTable th:nth-child(14),
 #ordersPageTable td:nth-child(14) {
 
     min-width:
-        120px;
+        130px;
 
 }
 
 
 /* =====================================================
-   LOADING CELLS
+   DESCRIPTION
+===================================================== */
+
+.description-cell {
+
+    white-space:
+        normal;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =====================================================
+   LOADED / NOT LOADED
 ===================================================== */
 
 .loaded-cell {
@@ -1009,6 +1115,21 @@ tbody tr:hover td {
    RESPONSIVE
 ===================================================== */
 
+@media (max-width: 1400px) {
+
+    .kpi-grid {
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+    }
+
+}
+
+
 @media (max-width: 1200px) {
 
     .table-toolbar {
@@ -1027,17 +1148,6 @@ tbody tr:hover td {
 @media (max-width: 1100px) {
 
     .kpi-grid {
-
-        grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
-
-    }
-
-
-    .table-toolbar {
 
         grid-template-columns:
             repeat(
