@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Logistics Control Tower
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            aria-label="القائمة"
+        >
+            ☰
+        </button>
+
+    </div>
+
+
+    <div class="header-center">
+
+        <h1>
+            الشركة الأساسية للإلكترونيات المحدودة
+        </h1>
+
+        <p>
+            قسم الشحن والتخليص الجمركي
+        </p>
+
+    </div>
+
+
+    <div class="header-right"></div>
+
+</header>
+
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="navbar">
+
+    <button
+        class="nav-btn active"
+        data-page="dashboardPage"
+    >
+        📊 لوحة التحكم
+    </button>
+
+
+    <button
+        class="nav-btn"
+        data-page="ordersPage"
+    >
+        📋 البيانات
+    </button>
+
+</nav>
+
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    class="page-section"
+    id="dashboardPage"
+>
+
+
+    <h2>
+        لوحة التحكم
+    </h2>
+
+
+
+    <!-- =================================================
+         KPI CARDS
+    ================================================== -->
+
+    <div class="kpi-grid">
+
+
+        <!-- TOTAL RECORDS -->
+
+        <div class="kpi-card shipments">
+
+            <div class="kpi-icon">
+                📋
+            </div>
+
+
+            <div class="kpi-content">
+
+                <div
+                    class="kpi-value"
+                    id="totalRecords"
+                >
+                    0
+                </div>
+
+
+                <div class="kpi-title">
+                    إجمالي السجلات
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL QTY -->
+
+        <div class="kpi-card quantity">
+
+            <div class="kpi-icon">
+                🔢
+            </div>
+
+
+            <div class="kpi-content">
+
+                <div
+                    class="kpi-value"
+                    id="totalQty"
+                >
+                    0
+                </div>
+
+
+                <div class="kpi-title">
+                    إجمالي الكمية
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL CONTAINERS -->
+
+        <div class="kpi-card containers">
+
+            <div class="kpi-icon">
+                📦
+            </div>
+
+
+            <div class="kpi-content">
+
+                <div
+                    class="kpi-value"
+                    id="totalContainers"
+                >
+                    0
+                </div>
+
+
+                <div class="kpi-title">
+                    إجمالي الحاويات
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOADED -->
+
+        <div class="kpi-card loaded">
+
+            <div class="kpi-icon">
+                🚢
+            </div>
+
+
+            <div class="kpi-content">
+
+                <div
+                    class="kpi-value"
+                    id="loadedContainers"
+                >
+                    0
+                </div>
+
+
+                <div class="kpi-title">
+                    الحاويات التي تم تحميلها
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         CHARTS
+    ================================================== -->
+
+    <div class="charts-grid">
+
+
+        <!-- FACTORY -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                أعلى 3 مصانع حسب الكمية
+            </div>
+
+
+            <div class="chart-body">
+
+                <canvas
+                    id="factoryChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                الحاويات حسب الحالة
+            </div>
+
+
+            <div class="chart-body">
+
+                <canvas
+                    id="statusChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         TABLE HEADER
+    ================================================== -->
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                بيانات الشحنات
+            </h2>
+
+        </div>
+
+
+        <div
+            class="container-count"
+            id="resultCount"
+        >
+            0 سجل
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FILTERS
+    ================================================== -->
+
+    <div class="table-toolbar">
+
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="بحث عن أمر الشراء، المصنع، الموديل، الوصف..."
+        >
+
+
+        <select
+            id="departmentFilter"
+        >
+
+            <option value="">
+                جميع الأقسام
+            </option>
+
+        </select>
+
+
+        <select
+            id="factoryFilter"
+        >
+
+            <option value="">
+                جميع المصانع
+            </option>
+
+        </select>
+
+
+        <select
+            id="statusFilter"
+        >
+
+            <option value="">
+                جميع الحالات
+            </option>
+
+        </select>
+
+
+        <select
+            id="polFilter"
+        >
+
+            <option value="">
+                جميع موانئ الشحن
+            </option>
+
+        </select>
+
+
+        <select
+            id="podFilter"
+        >
+
+            <option value="">
+                جميع موانئ الوصول
+            </option>
+
+        </select>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         MAIN TABLE
+    ================================================== -->
+
+    <div class="table-container">
+
+        <table id="ordersTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        رقم أمر الشراء
+                    </th>
+
+                    <th>
+                        المصنع
+                    </th>
+
+                    <th>
+                        التواصل
+                    </th>
+
+                    <th>
+                        القسم
+                    </th>
+
+                    <th>
+                        الموديل
+                    </th>
+
+                    <th>
+                        الوصف
+                    </th>
+
+                    <th>
+                        الكمية
+                    </th>
+
+                    <th>
+                        كمية لكل حاوية
+                    </th>
+
+                    <th>
+                        عدد الحاويات
+                    </th>
+
+                    <th>
+                        تم التحميل
+                    </th>
+
+                    <th>
+                        لم يتم التحميل
+                    </th>
+
+                    <th>
+                        ميناء الشحن
+                    </th>
+
+                    <th>
+                        ميناء الوصول
+                    </th>
+
+                    <th>
+                        الحالة
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody></tbody>
+
+        </table>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     DATA PAGE
+===================================================== -->
+
+<section
+    class="page-section hidden"
+    id="ordersPage"
+>
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                البيانات
+            </h2>
+
+
+            <p class="section-subtitle">
+                جميع البيانات المسجلة في Sheet1
+            </p>
+
+        </div>
+
+
+        <div
+            class="container-count"
+            id="ordersPageCount"
+        >
+            0 سجل
+        </div>
+
+    </div>
+
+
+
+    <div class="table-toolbar">
+
+        <input
+            type="text"
+            id="ordersSearchInput"
+            placeholder="بحث في البيانات..."
+        >
+
+    </div>
+
+
+
+    <div class="table-container">
+
+        <table id="ordersPageTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>رقم أمر الشراء</th>
+
+                    <th>المصنع</th>
+
+                    <th>التواصل</th>
+
+                    <th>القسم</th>
+
+                    <th>الموديل</th>
+
+                    <th>الوصف</th>
+
+                    <th>الكمية</th>
+
+                    <th>كمية لكل حاوية</th>
+
+                    <th>عدد الحاويات</th>
+
+                    <th>تم التحميل</th>
+
+                    <th>لم يتم التحميل</th>
+
+                    <th>ميناء الشحن</th>
+
+                    <th>ميناء الوصول</th>
+
+                    <th>الحالة</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody></tbody>
+
+        </table>
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     CHART.JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+
+<!-- =====================================================
+     MAIN SCRIPT
+===================================================== -->
+
+<script
+    src="script.js"
+></script>
+
+
+</body>
+
+</html>
